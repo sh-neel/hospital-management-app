@@ -122,7 +122,7 @@
                             <form action="/edit/{{ patient.id }}" method="POST">
                                 <td class="col-id">{{ loop.index }}</td>
                                 <td class="col-name"><input type="text" name="name" value="{{ patient.name or patient.Name }}" class="table-input"></td>
-                                <td class="col-age"><input type="number" name="age" min="0" value="{{ patient.age or patient.Age }}" class="table-input num-input"></td>
+                                <td class="col-age"><input type="number" name="age" min="1" value="{{ patient.age or patient.Age }}" class="table-input num-input"></td>
                                 <td class="col-gender">
                                     <select name="gender" class="table-select">
                                         <option value="Male" {% if (patient.gender or patient.Gender) == 'Male' %}selected{% endif %}>Male</option>

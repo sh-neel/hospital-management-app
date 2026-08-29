@@ -108,6 +108,14 @@ def calculate_los(admit_date_str, discharge_date_str):
     except (ValueError, TypeError):
         return 0
 
+def clean_age(age_val):
+    """Ensures age is always a positive integer greater than 0."""
+    try:
+        parsed_age = int(age_val)
+        return parsed_age if parsed_age > 0 else 1
+    except (ValueError, TypeError):
+        return 1
+
 @app.route('/')
 def index():
     generate_analytics_charts()
@@ -130,13 +138,13 @@ def index():
 @app.route('/add', methods=['POST'])
 def add_patient():
     name = request.form.get('name')
-    age = request.form.get('age')
+    age = clean_age(request.form.get('age'))
     gender = request.form.get('gender')
     department = request.form.get('department')
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
     
-    # Discharge date is optional now (returns None if left empty)
+    # Discharge date optional (SQL NULL if empty)
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
@@ -157,13 +165,13 @@ def add_patient():
 @app.route('/edit/<int:id>', methods=['POST'])
 def edit_patient(id):
     name = request.form.get('name')
-    age = request.form.get('age')
+    age = clean_age(request.form.get('age'))
     gender = request.form.get('gender')
     department = request.form.get('department')
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
     
-    # Discharge date is optional now (returns None if left empty)
+    # Discharge date optional (SQL NULL if empty)
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
