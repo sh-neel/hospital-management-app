@@ -94,8 +94,13 @@
                     <h3>Avg Cost per Department</h3>
                     <img src="{{ url_for('static', filename='chart_department_cost.png') }}?v={{ timestamp }}" alt="Cost Chart" style="width: 100%; border-radius: 6px;">
                 </div>
+                <div class="chart-container">
+                    <h3>Age Group Distribution</h3>
+                    <img src="{{ url_for('static', filename='chart_age_group.png') }}?v={{ timestamp }}" alt="Age Group Chart" style="width: 100%; border-radius: 6px;">
+                </div>
             </div>
         </div>
+        
         <!-- Patient Records Card -->
         <div class="card">
             <h2 class="card-title">Patient Records</h2>
