@@ -214,3 +214,9 @@ body {
 .btn-delete:hover {
     background-color: #b91c1c;
 }
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
