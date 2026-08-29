@@ -58,13 +58,17 @@ def init_db():
 init_db()
 
 def generate_analytics_charts():
-    """Generates dynamic chart images for the analytics dashboard."""
+    """Generates dynamic chart images for the analytics dashboard based on PBL specs."""
     try:
         conn = get_db_connection()
         df = pd.read_sql_query("SELECT * FROM patients", conn)
         conn.close()
 
         os.makedirs("static", exist_ok=True)
+
+        # PBL Requirement 1 & 2: Data Cleansing & Age Group Categorization
+        if not df.empty and 'age' in df.columns:
+            df['AgeGroup'] = pd.cut(df['age'], bins=[0, 18, 60, 100], labels=['Child', 'Adult', 'Senior'], right=True)
 
         # Chart 1: Top Diagnoses
         plt.figure(figsize=(6, 4))
@@ -95,6 +99,21 @@ def generate_analytics_charts():
         plt.tight_layout()
         plt.savefig('static/chart_department_cost.png')
         plt.close()
+
+        # Chart 3 (PBL Step 2): Age Group Distribution Analysis
+        plt.figure(figsize=(6, 4))
+        if not df.empty and 'AgeGroup' in df.columns:
+            sns.countplot(data=df, x='AgeGroup', palette='Set2')
+            plt.title('Patient Age Group Distribution')
+            plt.xlabel('Age Group')
+            plt.ylabel('Patient Count')
+        else:
+            plt.text(0.5, 0.5, 'No Data Available', horizontalalignment='center', verticalalignment='center', fontsize=12)
+            plt.title('Age Group Distribution')
+        plt.tight_layout()
+        plt.savefig('static/chart_age_group.png')
+        plt.close()
+
     except Exception as e:
         print(f"Chart Generation Error: {e}")
 
@@ -151,11 +170,9 @@ def add_patient():
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
     
-    # Discharge date optional (SQL NULL if empty)
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
-    # Bill amount optional (defaults to 0.0 if empty)
     bill_amount = clean_bill_amount(request.form.get('bill_amount'))
 
     conn = get_db_connection()
@@ -179,11 +196,9 @@ def edit_patient(id):
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
     
-    # Discharge date optional (SQL NULL if empty)
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
-    # Bill amount optional (defaults to 0.0 if empty)
     bill_amount = clean_bill_amount(request.form.get('bill_amount'))
 
     conn = get_db_connection()
