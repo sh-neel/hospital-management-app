@@ -23,7 +23,6 @@ def get_db_connection():
     """Establishes connection to PostgreSQL using DATABASE_URL."""
     DATABASE_URL = os.environ.get('DATABASE_URL')
     if DATABASE_URL:
-        # Handle Render's legacy postgres:// prefix if present
         if DATABASE_URL.startswith("postgres://"):
             DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
         conn = psycopg2.connect(DATABASE_URL)
@@ -56,7 +55,6 @@ def init_db():
     except Exception as e:
         print(f"Database Initialization Error: {e}")
 
-# Initialize schema automatically when app loads
 init_db()
 
 def generate_analytics_charts():
@@ -101,6 +99,8 @@ def generate_analytics_charts():
         print(f"Chart Generation Error: {e}")
 
 def calculate_los(admit_date_str, discharge_date_str):
+    if not discharge_date_str:
+        return 0
     try:
         admit = datetime.strptime(admit_date_str, '%Y-%m-%d')
         discharge = datetime.strptime(discharge_date_str, '%Y-%m-%d')
@@ -135,7 +135,11 @@ def add_patient():
     department = request.form.get('department')
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
-    discharge_date = request.form.get('discharge_date')
+    
+    # Discharge date is optional now (returns None if left empty)
+    raw_discharge_date = request.form.get('discharge_date')
+    discharge_date = raw_discharge_date if raw_discharge_date else None
+    
     bill_amount = request.form.get('bill_amount', 0.0)
 
     conn = get_db_connection()
@@ -158,7 +162,11 @@ def edit_patient(id):
     department = request.form.get('department')
     disease = request.form.get('disease')
     admit_date = request.form.get('admit_date')
-    discharge_date = request.form.get('discharge_date')
+    
+    # Discharge date is optional now (returns None if left empty)
+    raw_discharge_date = request.form.get('discharge_date')
+    discharge_date = raw_discharge_date if raw_discharge_date else None
+    
     bill_amount = request.form.get('bill_amount', 0.0)
 
     conn = get_db_connection()

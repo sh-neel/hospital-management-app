@@ -66,7 +66,7 @@
 
                 <div class="form-group">
                     <label>Discharge Date (Leave Date)</label>
-                    <input type="date" name="discharge_date" required>
+                    <input type="date" name="discharge_date"> <!-- 'required' remove kar diya hai -->
                 </div>
 
                 <!-- Bill Amount Input Fixed -->
@@ -146,7 +146,9 @@
                                     </select>
                                 </td>
                                 <td class="col-date"><input type="date" name="admit_date" value="{{ patient.admit_date or patient.AdmissionDate }}" class="table-input"></td>
-                                <td class="col-date"><input type="date" name="discharge_date" value="{{ patient.discharge_date or patient.DischargeDate }}" class="table-input"></td>
+                               <td class="col-date">
+                                    <input type="date" name="discharge_date" value="{{ patient.discharge_date or patient.DischargeDate or '' }}" class="table-input">
+                                    </td>
                                 <td class="col-los">
                                     {{ patient.LOS if patient.LOS is not none else 0 }}
                                 </td>
