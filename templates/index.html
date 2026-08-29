@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Patient Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Title Header -->
+        <h1 class="main-title">🏥 Hospital Patient Management System</h1>
+
+        <!-- Add New Patient Card -->
+        <div class="card">
+            <h2 class="card-title">Add New Patient</h2>
+            <form action="/add" method="POST" class="patient-form">
+                
+                <div class="form-group">
+                    <label>Patient Name</label>
+                    <input type="text" name="name" required placeholder="Enter name">
+                </div>
+
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" name="age" min="0" required placeholder="Enter age">
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" required>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Department Selection Dropdown -->
+                <div class="form-group">
+                    <label>Department</label>
+                    <select name="department" required>
+                        <option value="" disabled selected>Select department</option>
+                        <option value="General">General</option>
+                        <option value="ICU">ICU</option>
+                        <option value="AC">AC</option>
+                        <option value="Special">Special</option>
+                    </select>
+                </div>
+
+                <!-- Predefined Disease Selection Dropdown -->
+                <div class="form-group">
+                    <label>Disease</label>
+                    <select name="disease" required>
+                        <option value="" disabled selected>Enter disease</option>
+                        {% for d in diseases %}
+                            <option value="{{ d }}">{{ d }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Patient Dates -->
+                <div class="form-group">
+                    <label>Admit Date</label>
+                    <input type="date" name="admit_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Discharge Date (Leave Date)</label>
+                    <input type="date" name="discharge_date" required>
+                </div>
+
+                <!-- Bill Amount Input -->
+                <div class="form-group">
+                    <label>Bill Amount ($)</label>
+                    <input type="number" step="0.01" name="bill_amount" placeholder="Enter bill amount" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">Add Patient</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Hospital Management Analytics Dashboard -->
+        <div class="card">
+            <h2 class="card-title">Hospital Analytics Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="chart-container">
+                    <h3>Top Diagnoses</h3>
+                    <!-- Appended cache-busting timestamp parameter so images update dynamically -->
+                    <img src="{{ url_for('static', filename='chart_diagnoses.png') }}?v={{ timestamp }}" alt="Diagnoses Chart" style="width: 100%; border-radius: 6px;">
+                </div>
+                <div class="chart-container">
+                    <h3>Avg Cost per Department</h3>
+                    <!-- Appended cache-busting timestamp parameter so images update dynamically -->
+                    <img src="{{ url_for('static', filename='chart_department_cost.png') }}?v={{ timestamp }}" alt="Cost Chart" style="width: 100%; border-radius: 6px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Records Card -->
+        <div class="card">
+            <h2 class="card-title">Patient Records</h2>
+            <div class="table-responsive">
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th class="col-id">Patient ID</th>
+                            <th class="col-name">Name</th>
+                            <th class="col-age">Age</th>
+                            <th class="col-gender">Gender</th>
+                            <th class="col-dept">Department</th>
+                            <th class="col-disease">Disease</th>
+                            <th class="col-date">Admit Date</th>
+                            <th class="col-date">Leave Date</th>
+                            <th class="col-los">LOS (Days)</th>
+                            <th class="col-bill">Bill Amount</th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <form action="/edit/{{ patient.id }}" method="POST">
+                                <!-- Loop index ensures visible IDs remain sequential (1, 2, 3...) -->
+                                <td class="col-id">{{ loop.index }}</td>
+                                <td class="col-name"><input type="text" name="name" value="{{ patient.Name if patient.Name else patient.name }}" class="table-input"></td>
+                                <td class="col-age"><input type="number" name="age" min="0" value="{{ patient.Age if patient.Age else patient.age }}" class="table-input num-input"></td>
+                                <td class="col-gender">
+                                    <select name="gender" class="table-select">
+                                        <option value="Male" {% if (patient.Gender or patient.gender) == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if (patient.Gender or patient.gender) == 'Female' %}selected{% endif %}>Female</option>
+                                        <option value="Other" {% if (patient.Gender or patient.gender) == 'Other' %}selected{% endif %}>Other</option>
+                                    </select>
+                                </td>
+                                <td class="col-dept">
+                                    <select name="department" class="table-select">
+                                        <option value="General" {% if (patient.Department or patient.department) == 'General' %}selected{% endif %}>General</option>
+                                        <option value="ICU" {% if (patient.Department or patient.department) == 'ICU' %}selected{% endif %}>ICU</option>
+                                        <option value="AC" {% if (patient.Department or patient.department) == 'AC' %}selected{% endif %}>AC</option>
+                                        <option value="Special" {% if (patient.Department or patient.department) == 'Special' %}selected{% endif %}>Special</option>
+                                    </select>
+                                </td>
+                                <td class="col-disease">
+                                    <select name="disease" class="table-select">
+                                        {% for d in diseases %}
+                                            <option value="{{ d }}" {% if (patient.Diagnosis or patient.disease) == d %}selected{% endif %}>{{ d }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                <td class="col-date"><input type="date" name="admit_date" value="{{ patient.AdmissionDate if patient.AdmissionDate else patient.admit_date }}" class="table-input"></td>
+                                <td class="col-date"><input type="date" name="discharge_date" value="{{ patient.DischargeDate if patient.DischargeDate else patient.discharge_date }}" class="table-input"></td>
+                                <td class="col-los">
+                                    {% if patient.LOS is not none and patient.LOS != '' %}
+                                        {{ patient.LOS }}
+                                    {% elif patient.los is not none and patient.los != '' %}
+                                        {{ patient.los }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td class="col-bill">
+                                    <input type="number" step="0.01" name="bill_amount" value="{{ patient.BillAmount if patient.BillAmount is not none else (patient.bill_amount if patient.bill_amount is not none else 0) }}" class="table-input">
+                                </td>
+                                <td class="col-actions action-buttons">
+                                    <button type="submit" class="btn-save">Save</button>
+                                    <a href="/delete/{{ patient.id }}" class="btn-delete" onclick="return confirm('Delete this record?')">Delete</a>
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
+</body>
+</html>

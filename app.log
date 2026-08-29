@@ -1,0 +1,21 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 922-495-359
+127.0.0.1 - - [25/Aug/2026 17:13:07] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:13:07] "GET /static/chart_diagnoses.png?v=1787658187 HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:13:07] "GET /static/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:13:07] "GET /static/chart_department_cost.png?v=1787658187 HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:13:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [25/Aug/2026 17:38:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:38:55] "GET /static/chart_diagnoses.png?v=1787659735 HTTP/1.1" 200 -
+127.0.0.1 - - [25/Aug/2026 17:38:55] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [25/Aug/2026 17:38:55] "GET /static/chart_department_cost.png?v=1787659735 HTTP/1.1" 200 -
+/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-jtkfr8ix'}
+  warnings.warn(
+/opt/homebrew/Cellar/python@3.14/3.14.3_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-wocvja2p'}
+  warnings.warn(

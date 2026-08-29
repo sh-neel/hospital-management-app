@@ -1,0 +1,216 @@
+/* General Page Reset & Background */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333333;
+    padding: 40px 20px;
+}
+
+/* Page Container */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Header Title */
+.main-title {
+    color: #1a365d;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* White Container Cards */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.card-title {
+    color: #2d3748;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #2d3748;
+    background-color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+/* Add Patient Button */
+.btn-submit {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+    background-color: #1e3a8a;
+}
+
+/* Dashboard Analytics Styles (Condition 3 & 4) */
+.dashboard-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.chart-container {
+    flex: 1;
+    min-width: 280px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.chart-container h3 {
+    font-size: 16px;
+    color: #2d3748;
+    margin-bottom: 12px;
+}
+
+/* Table Styling */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* Enables horizontal scroll bar when table overflows */
+    -webkit-overflow-scrolling: touch;
+}
+
+.records-table {
+    min-width: 1100px; /* Ensures all inputs have room */
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: fixed;
+}
+
+.col-bill input {
+    min-width: 80px;
+}
+
+/* Column Width Definitions (Adjusted to prevent text overlap) */
+.col-id { width: 90px; }
+.col-name { width: 125px; }
+.col-age { width: 55px; }
+.col-gender { width: 85px; }
+.col-dept { width: 100px; }
+.col-disease { width: 110px; }
+.col-date { width: 135px; }
+.col-los { width: 85px; }
+.col-bill { width: 105px; }
+.col-actions { width: 130px; }
+
+/* Blue Header Row */
+.records-table th {
+    background-color: #1e40af;
+    color: #ffffff;
+    padding: 12px 6px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.records-table td {
+    padding: 10px 6px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: middle;
+}
+
+/* Table Inputs for Editable Fields */
+.table-input, 
+.table-select {
+    width: 100%;
+    padding: 6px 6px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.num-input {
+    width: 100%;
+}
+
+/* Action Buttons Inside Table */
+.action-buttons {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.btn-save {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-save:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-delete {
+    background-color: #dc2626;
+    color: white;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-delete:hover {
+    background-color: #b91c1c;
+}
