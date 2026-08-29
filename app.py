@@ -116,6 +116,13 @@ def clean_age(age_val):
     except (ValueError, TypeError):
         return 1
 
+def clean_bill_amount(bill_val):
+    """Safely converts bill amount to float, defaults to 0.0 if empty/invalid."""
+    try:
+        return float(bill_val) if bill_val is not None and str(bill_val).strip() != '' else 0.0
+    except (ValueError, TypeError):
+        return 0.0
+
 @app.route('/')
 def index():
     generate_analytics_charts()
@@ -148,14 +155,15 @@ def add_patient():
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
-    bill_amount = request.form.get('bill_amount', 0.0)
+    # Bill amount optional (defaults to 0.0 if empty)
+    bill_amount = clean_bill_amount(request.form.get('bill_amount'))
 
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
         '''INSERT INTO patients (name, age, gender, department, disease, admit_date, discharge_date, bill_amount) 
            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''',
-        (name, age, gender, department, disease, admit_date, discharge_date, float(bill_amount) if bill_amount else 0.0)
+        (name, age, gender, department, disease, admit_date, discharge_date, bill_amount)
     )
     conn.commit()
     cur.close()
@@ -175,7 +183,8 @@ def edit_patient(id):
     raw_discharge_date = request.form.get('discharge_date')
     discharge_date = raw_discharge_date if raw_discharge_date else None
     
-    bill_amount = request.form.get('bill_amount', 0.0)
+    # Bill amount optional (defaults to 0.0 if empty)
+    bill_amount = clean_bill_amount(request.form.get('bill_amount'))
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -183,7 +192,7 @@ def edit_patient(id):
         '''UPDATE patients 
            SET name=%s, age=%s, gender=%s, department=%s, disease=%s, admit_date=%s, discharge_date=%s, bill_amount=%s 
            WHERE id=%s''',
-        (name, age, gender, department, disease, admit_date, discharge_date, float(bill_amount) if bill_amount else 0.0, id)
+        (name, age, gender, department, disease, admit_date, discharge_date, bill_amount, id)
     )
     conn.commit()
     cur.close()
