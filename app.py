@@ -8,7 +8,16 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import seaborn as sns
 from flask import Flask, render_template, request, redirect, url_for
+import psycopg2
 
+
+def get_db_connection():
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL:
+        conn = psycopg2.connect(DATABASE_URL)
+    else:
+        conn = sqlite3.connect('hospital.db')
+    return conn
 app = Flask(__name__)
 
 DISEASES = [
@@ -185,5 +194,18 @@ def delete_patient(id):
     conn.close()
     return redirect(url_for('index'))
 
+@app.route('/view-data')
+def view_data():
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM patients;")
+        rows = cur.fetchall()
+        conn.close()
+        return {"status": "success", "total_entries": len(rows), "data": rows}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
